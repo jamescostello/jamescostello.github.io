@@ -50,13 +50,17 @@
         }
 
         window.addEventListener('load', load);
+
+        function open_camera() {
+            window.location = "camera://";
+        }
     </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title></title>
 </head>
 <body>
-    <input type="file" accept="video/*" capture="camera">
+    <button onclick="open_camera()">Camera</button>
     <br />
     <button onclick="localStorage.clear();document.location='index.html'">Clear Items</button>
     <div>
