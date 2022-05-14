@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        function load() {
+            const params = new Proxy(new URLSearchParams(window.location.search), {
+                get: (searchParams, prop) => searchParams.get(prop),
+            });
+
+            
+            let local_set = (key, value) => {
+                return localStorage.setItem(key, JSON.stringify(value));
+            };
+
+            let local_get = key => {
+                return JSON.parse(localStorage.getItem(key));
+            };
+
+            let new_item = params.item;
+
+            console.log(new_item);
+
+            // local_set('items', ['test']);
+
+            let items = local_get('items');
+
+            if (!Array.isArray(items)) {
+                items = [];
+                local_set('items', items);
+            }
+
+            if (new_item && !items.includes(new_item)) {
+                items.push(new_item);
+                local_set('items', items);
+            }
+
+            items = local_get('items');
+
+            let items_div = document.getElementById('items');//document.querySelector('#items');
+
+            for (var i = 0; i < items.length; i++) {
+                const item_div = document.createElement('div');
+
+                item_div.innerHTML = '<div>' + items[i] + '</div>';
+
+                items_div.appendChild(item_div);
+            }
+
+            console.log(items);
+        }
+
+        window.addEventListener('load', load);
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+</head>
+<body>
+    <button onclick="localStorage.clear();document.location='index.html'">Clear Items</button>
+    <div>
+        <b>Items</b>
+        <div id="items" />
+    </div>
+    <div>
+        <b>Clues</b>
+        <div id="clues" />
+    </div>
+</body>
+</html>
