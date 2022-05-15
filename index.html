@@ -12,13 +12,17 @@
         }*/
 
         #header {
-            position: sticky;
+            /*position: sticky;*/
             top: 0;
             background-color: white;
         }
 
         #content {
             /*margin-top: 100px;*/
+        }
+
+        #useitems {
+            font-weight: bold;
         }
     </style>
     <script>
@@ -100,7 +104,7 @@
                         </label>
                     </div>`;
 
-                items_div.appendChild(item_div);
+                items_div.prepend(item_div);
 
                 if (item == 'Labyrinth') {
                     add_clue('_______________________________________');
@@ -306,18 +310,17 @@ white
 
     <div id="header">
         <div id="scanner"></div>
-        <br />
-        <button onclick="use_items()">Use Items</button>
     </div>
 
     <div id="content">
         <div>
             <b>Clues</b>
             <div id="clues" />
+            <br />
         </div>
         <div>
             <b>Items</b>
-            
+            <button id="useitems" onclick="use_items()">Use Items</button>
             <fieldset>
                 <div id="items" />
             </fieldset>
