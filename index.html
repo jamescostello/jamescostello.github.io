@@ -2,83 +2,264 @@
 <html>
 <head>
     <script>
+        let items = [];
+        let clues = [];
+
         function load() {
-            const params = new Proxy(new URLSearchParams(window.location.search), {
-                get: (searchParams, prop) => searchParams.get(prop),
-            });
+            // const params = new Proxy(new URLSearchParams(window.location.search), {
+            //     get: (searchParams, prop) => searchParams.get(prop),
+            // });
 
             
-            let local_set = (key, value) => {
-                return localStorage.setItem(key, JSON.stringify(value));
-            };
+            let existing_items = local_get('items');
 
-            let local_get = key => {
-                return JSON.parse(localStorage.getItem(key));
-            };
-
-            let new_item = params.item;
-
-            console.log(new_item);
-
-            // local_set('items', ['test']);
-
-            let items = local_get('items');
-
-            if (!Array.isArray(items)) {
-                items = [];
-                local_set('items', items);
+            if (!Array.isArray(existing_items)) {
+                existing_items = [];
+                local_set('items', existing_items);
             }
 
-            if (new_item && !items.includes(new_item)) {
-                items.push(new_item);
-                local_set('items', items);
+            for (var i = 0; i < existing_items.length; i++) {
+                add_item(existing_items[i]);
             }
 
-            items = local_get('items');
+            let new_item = getUrlItem(window.location);
 
-            let items_div = document.getElementById('items');//document.querySelector('#items');
-
-            for (var i = 0; i < items.length; i++) {
-                const item_div = document.createElement('div');
-
-                item_div.innerHTML = '<div><img src="' + items[i] + '.png" alt="' + items[i] + '"></div>';
-
-
-            //   item_div.innerHTML = `
-            //     <label> 
-            //       <input type="checkbox" name="check" value="1" /> Checked? 
-            //     </label>
-            //     <input type="button" value="-" onclick="removeRow(this)" />
-            // `;
-
-                items_div.appendChild(item_div);
+            if (new_item) {
+                add_item(new_item);
             }
 
             console.log(items);
+
+
+
+            let existing_clues = local_get('clues');
+
+            if (!Array.isArray(existing_clues)) {
+                existing_clues = [];
+                local_set('clues', existing_clues);
+            }
+
+            for (var i = 0; i < existing_clues.length; i++) {
+                add_clue(existing_clues[i]);
+            }
+        }
+
+        let local_set = (key, value) => {
+            return localStorage.setItem(key, JSON.stringify(value));
+        };
+
+        let local_get = key => {
+            return JSON.parse(localStorage.getItem(key));
+        };
+
+        function getUrlItem(url) {
+            let url_params = (new URL(url)).searchParams;
+
+            return url_params.get('item');
+        }
+
+        function add_item(item) {
+            if (item && !items.includes(item)) {
+                console.log('adding item', item);
+
+                items.push(item);
+                local_set('items', items);
+
+                let items_div = document.getElementById('items');
+
+                const item_div = document.createElement('div');
+                item_div.setAttribute('id', item);
+
+                item_div.innerHTML = `
+                    <div>
+                        <input type="checkbox" name="` + item + `">
+                        <img src="` + item + `.png" alt="` + item + `">
+                    </div>`;
+
+                items_div.appendChild(item_div);
+
+                if (item == 'Labyrinth') {
+                    add_clue('Go to: SLIMES, but M=D');
+                }
+            }
+        }
+
+        function remove_item(item) {
+            if (item && items.includes(item)) {
+                console.log('removing item', item);
+
+                items = items.filter(function(value) {
+                    return item !== value
+                });
+
+                local_set('items', items);
+
+                document.getElementById(item).remove();
+            }
+        }
+
+        function add_clue(clue) {
+            if (clue && !clues.includes(clue)) {
+                console.log('adding clue', clue);
+
+                clues.push(clue);
+                local_set('clues', clues);
+
+                let clues_div = document.getElementById('clues');
+
+                const clue_div = document.createElement('div');
+                clue_div.setAttribute('id', clue);
+
+                clue_div.innerHTML = `
+                    <div>
+                        ` + clue + `
+                    </div>`;
+
+                clues_div.prepend(clue_div);
+            }
+        }
+
+        function on_qr_scan(scannedText) {
+            console.log(scannedText)
+            let new_item = getUrlItem(scannedText);
+            console.log(new_item)
+            if (new_item) {
+                add_item(new_item);
+            }
+        }
+
+        function reset_game() {
+            localStorage.clear();
+            document.location='index.html';
+        }
+
+        function use_items() {
+            var checked_boxes = document.querySelectorAll('input:checked');
+
+            let items_being_used = [];
+
+            for (var i = checked_boxes.length - 1; i >= 0; i--) {
+                items_being_used.push(checked_boxes[i].name);
+            }
+
+            let is_valid_use = run_engine(items_being_used);
+
+            if (is_valid_use) {
+                for (var i = items_being_used.length - 1; i >= 0; i--) {
+                    remove_item(items_being_used[i]);
+                }
+            }
+        }
+  
+/*      
+notes
+piano
+boulder
+tree
+key
+lock
+book
+summerstride
+Terpsichore
+Sisyphus
+Loki
+Thalia
+Labyrinth
+red
+green
+blue
+purple
+white
+*/
+
+
+        // "EARTH'S [S:red][A][T:green][E][L:blue][L:purple][I][T:white][E]"
+
+
+        function run_engine(items_being_used) {
+            if (is_using_items(items_being_used, ['notes','piano'])) {
+                add_item('Terpsichore');
+                add_clue('You just got Terpsichore! She\'s the goddess of song!');
+                add_clue('Play Surface Pressure');
+                return true;
+            }
+
+            if (is_using_items(items_being_used, ['boulder','tree'])) {
+                add_item('Sisyphus');
+                add_clue('__________________________');
+                add_clue('You just got Sisyphus!');
+                add_clue('Your rock is rolling down the hill to this: 🌀.');
+                return true;
+            }
+
+            if (is_using_items(items_being_used, ['key','lock'])) {
+                add_item('Loki');
+                add_clue('__________________________');
+                add_clue('Also, you just got Loki! He likes slides because he\'s the god of playfulness (and mischief).');
+                add_clue('Then go to address: 12 * (Luna\'s age + Tabby\'s age + Sadie\'s age)   ⛰ + 🧘🏽‍♀️' );
+                add_clue('Use code: 7487');
+                return true;
+            }
+
+            if (is_using_items(items_being_used, ['book','summerstride'])) {
+                add_item('Thalia');
+                add_clue('__________________________');
+                add_clue('Good job reading your book. You just got Thalia! She\'s the goddess of comedy!');
+            }
+
+            return false;
+        }
+
+        function is_using_items(items_being_used, items_to_check) {
+            return items_being_used.sort().join(',') === items_to_check.sort().join(',');
+        }
+
+        function JsQRScannerReady() {
+            //create a new scanner passing to it a callback function that will be invoked when
+            //the scanner succesfully scan a QR code
+            var jbScanner = new JsQRScanner(on_qr_scan);
+            //reduce the size of analyzed images to increase performance on mobile devices
+            jbScanner.setSnapImageMaxSize(300);
+            var scannerParentElement = document.getElementById("scanner");
+            if (scannerParentElement)
+            {
+                //append the jbScanner to an existing DOM element
+                jbScanner.appendTo(scannerParentElement);
+            }        
         }
 
         window.addEventListener('load', load);
 
-        function open_camera() {
-            window.location = "camera://?test";
-        }
+        // https://github.com/jbialobr/JsQRScanner
     </script>
+    
+    <script type="text/javascript" src="js/jsqrscanner.nocache.js"></script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title></title>
 </head>
 <body>
-    <button onclick="open_camera()">Camera</button>
-    <br />
-    <button onclick="localStorage.clear();document.location='index.html'">Clear Items</button>
+    <div id="scanner"></div>
+
     <div>
         <b>Items</b>
-        <div id="items" />
-
+        <button onclick="use_items()">Use Items</button>
+        <fieldset>
+            <div id="items" />
+        </fieldset>
     </div>
     <div>
         <b>Clues</b>
         <div id="clues" />
     </div>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <button onclick="reset_game()">RESET GAME</button>
 </body>
 </html>
