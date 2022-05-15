@@ -112,8 +112,8 @@
 
                 if (item == 'Loki') {
                     add_clue('__________________________________________');
-                    add_clue('Loki likes slides because he\'s the god of playfulness (and mischief).');
                     add_clue('Go to address: 12 * (Luna\'s age + Tabby\'s age + Sadie\'s age)   ⛰ + 🧘🏽‍♀️' );
+                    add_clue('Loki likes slides because he\'s the god of playfulness (and mischief).');
                 }
             }
         }
@@ -218,16 +218,16 @@ white
         function run_engine(items_being_used) {
             if (is_using_items(items_being_used, ['notes','piano'])) {
                 add_item('Terpsichore');
-                add_clue('You just got Terpsichore! She\'s the goddess of song!');
                 add_clue('Play Surface Pressure');
+                add_clue('You just got Terpsichore! She\'s the goddess of song!');
                 return true;
             }
 
             if (is_using_items(items_being_used, ['boulder','tree'])) {
                 add_item('Sisyphus');
                 add_clue('___________________________');
-                add_clue('You just got Sisyphus!');
                 add_clue('Your rock is rolling down the hill to this: 🌀.');
+                add_clue('You just got Sisyphus!');
                 return true;
             }
 
