@@ -10,6 +10,14 @@
         .item {
             float: left;
         }
+
+/*        #header {
+            position: fixed;
+        }
+
+        #content {
+            margin-top: 100px;
+        }*/
     </style>
     <script>
         let items = [];
@@ -284,27 +292,43 @@ white
     <title></title>
 </head>
 <body>
-    <div id="scanner"></div>
 
-    <div>
-        <b>Items</b>
+    <div id="header">
+        <div id="scanner"></div>
+        <br />
+        <br />
         <button onclick="use_items()">Use Items</button>
-        <fieldset>
-            <div id="items" />
-        </fieldset>
     </div>
-    <div>
-        <b>Clues</b>
-        <div id="clues" />
+
+    <div id="content">
+        <div>
+            <b>Items</b>
+            
+            <fieldset>
+                <div id="items" />
+            </fieldset>
+        </div>
+        <div>
+            <b>Clues</b>
+            <div id="clues" />
+        </div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <button onclick="reset_game()">RESET GAME</button>
     </div>
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <button onclick="reset_game()">RESET GAME</button>
 </body>
 </html>
