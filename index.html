@@ -101,11 +101,19 @@
                 items_div.appendChild(item_div);
 
                 if (item == 'Labyrinth') {
+                    add_clue('_______________________________________');
                     add_clue('Go to: SLIMES, but M=D');
                 }
 
                 if (item == 'book') {
+                    add_clue('____________________________________');
                     add_clue('Read your book and add it to your summer reading log.');
+                }
+
+                if (item == 'Loki') {
+                    add_clue('__________________________________________');
+                    add_clue('Loki likes slides because he\'s the god of playfulness (and mischief).');
+                    add_clue('Go to address: 12 * (Luna\'s age + Tabby\'s age + Sadie\'s age)   ⛰ + 🧘🏽‍♀️' );
                 }
             }
         }
@@ -224,10 +232,7 @@ white
             }
 
             if (is_using_items(items_being_used, ['key','lock'])) {
-                add_item('Loki');
                 add_clue('____________________________');
-                add_clue('Also, you just got Loki! He likes slides because he\'s the god of playfulness (and mischief).');
-                add_clue('Then go to address: 12 * (Luna\'s age + Tabby\'s age + Sadie\'s age)   ⛰ + 🧘🏽‍♀️' );
                 add_clue('Use code: 7487');
                 return true;
             }
