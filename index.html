@@ -7,17 +7,19 @@
           height: 240px;
         }
 
-        .item {
+/*        .item {
             float: left;
-        }
+        }*/
 
-/*        #header {
-            position: fixed;
+        #header {
+            position: sticky;
+            top: 0;
+            background-color: white;
         }
 
         #content {
-            margin-top: 100px;
-        }*/
+            /*margin-top: 100px;*/
+        }
     </style>
     <script>
         let items = [];
@@ -305,21 +307,20 @@ white
     <div id="header">
         <div id="scanner"></div>
         <br />
-        <br />
         <button onclick="use_items()">Use Items</button>
     </div>
 
     <div id="content">
+        <div>
+            <b>Clues</b>
+            <div id="clues" />
+        </div>
         <div>
             <b>Items</b>
             
             <fieldset>
                 <div id="items" />
             </fieldset>
-        </div>
-        <div>
-            <b>Clues</b>
-            <div id="clues" />
         </div>
         <br />
         <br />
