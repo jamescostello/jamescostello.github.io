@@ -7,10 +7,9 @@
           height: 240px;
         }
 
-        h1 {
-          color: maroon;
-          margin-left: 40px;
-        } 
+        .item {
+            float: left;
+        }
     </style>
     <script>
         let items = [];
@@ -82,9 +81,13 @@
                 item_div.setAttribute('id', item);
 
                 item_div.innerHTML = `
-                    <div>
-                        <input type="checkbox" name="` + item + `">
-                        <img src="` + item + `.png" alt="` + item + `">
+                    <div class="item">
+                        <input type="checkbox" name="` + item + `" id="` + item + `Checkbox">
+                        <label for="` + item + `Checkbox">
+                            ` + item + `
+                            <br />
+                            <img src="images/` + item + `.png">
+                        </label>
                     </div>`;
 
                 items_div.appendChild(item_div);
@@ -161,7 +164,12 @@
                 }
             }
         }
-  
+
+/*
+place lock
+place book
+*/
+
 /*      
 notes
 piano
@@ -197,7 +205,7 @@ white
 
             if (is_using_items(items_being_used, ['boulder','tree'])) {
                 add_item('Sisyphus');
-                add_clue('__________________________');
+                add_clue('___________________________');
                 add_clue('You just got Sisyphus!');
                 add_clue('Your rock is rolling down the hill to this: 🌀.');
                 return true;
@@ -205,7 +213,7 @@ white
 
             if (is_using_items(items_being_used, ['key','lock'])) {
                 add_item('Loki');
-                add_clue('__________________________');
+                add_clue('____________________________');
                 add_clue('Also, you just got Loki! He likes slides because he\'s the god of playfulness (and mischief).');
                 add_clue('Then go to address: 12 * (Luna\'s age + Tabby\'s age + Sadie\'s age)   ⛰ + 🧘🏽‍♀️' );
                 add_clue('Use code: 7487');
@@ -214,8 +222,34 @@ white
 
             if (is_using_items(items_being_used, ['book','summerstride'])) {
                 add_item('Thalia');
-                add_clue('__________________________');
+                add_clue('_____________________________');
                 add_clue('Good job reading your book. You just got Thalia! She\'s the goddess of comedy!');
+                return true;
+            }
+
+            if (is_using_items(items_being_used, ['Sisyphus','red'])) {
+                add_clue('Hi Sadie!');
+                return true;
+            }
+
+            if (is_using_items(items_being_used, ['Terpsichore','green'])) {
+                add_clue('Hi Tabby!');
+                return true;
+            }
+
+            if (is_using_items(items_being_used, ['Thalia','white'])) {
+                add_clue('Hi Tiffany!');
+                return true;
+            }
+
+            if (is_using_items(items_being_used, ['Labyrinth','blue'])) {
+                add_clue('Hi Luna!');
+                return true;
+            }
+
+            if (is_using_items(items_being_used, ['Loki','purple'])) {
+                add_clue('Hi Lake!');
+                return true;
             }
 
             return false;
